@@ -77,15 +77,12 @@ func (c *Client) fullURL(suffix string) string {
 
 func (c *Client) handleErrorResp(resp *http.Response) error {
 	var errRes myerr.ErrorResponse
-	err := json.NewDecoder(resp.Body).Decode(&errRes)
+	errByte, _ := io.ReadAll(resp.Body)
 
-	if err != nil || errRes.Error == nil {
-		reqErr := myerr.RequestError{
-			HTTPStatusCode: resp.StatusCode,
-			Err:            err,
-		}
-		return fmt.Errorf("error, %w", &reqErr)
+	errRes.Error = &myerr.APIError{
+		Code:           resp.StatusCode,
+		Message:        string(errByte),
+		HTTPStatusCode: resp.StatusCode,
 	}
-	errRes.Error.HTTPStatusCode = resp.StatusCode
 	return fmt.Errorf("error, status code: %d, message: %w", resp.StatusCode, errRes.Error)
 }

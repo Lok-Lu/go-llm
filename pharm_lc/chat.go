@@ -2,7 +2,6 @@ package pharm_lc
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 )
 
@@ -23,7 +22,6 @@ func (c *Client) CreateChat(
 
 	urlSuffix := ""
 	req, err := c.requestBuilder.Build(ctx, http.MethodPost, c.fullURL(urlSuffix), request)
-	fmt.Println(err)
 	if err != nil {
 		return
 	}

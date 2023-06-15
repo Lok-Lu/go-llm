@@ -77,7 +77,7 @@ func decodeString(body io.Reader, output *string) error {
 }
 
 func (c *Client) fullURL(suffix, version string) string {
-	if version == "" {
+	if c.config.BaseURL != "" {
 		return fmt.Sprintf("%s%s", c.config.BaseURL, suffix)
 	}
 	return fmt.Sprintf("%s%s", c.config.VersionUrl[version], suffix)

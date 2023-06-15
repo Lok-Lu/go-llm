@@ -14,3 +14,8 @@ func (l *LLMConfig) SetPharmConfig(Url string) *LLMConfig {
 	l.Pharm = pharm_lc.DefaultConfig(Url)
 	return l
 }
+
+func (l *LLMConfig) SetPharmConfigWithVersion(versions map[string]string) *LLMConfig {
+	l.Pharm = pharm_lc.NewConfigWithVersion(versions)
+	return l
+}

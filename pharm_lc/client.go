@@ -19,6 +19,11 @@ func NewClient(url string) *Client {
 	return NewClientWithConfig(config)
 }
 
+func NewClientWithVersions(versions map[string]string) *Client {
+	config := NewConfigWithVersion(versions)
+	return NewClientWithConfig(config)
+}
+
 func NewClientWithConfig(config ClientConfig) *Client {
 	return &Client{
 		config:         config,
@@ -71,8 +76,11 @@ func decodeString(body io.Reader, output *string) error {
 	return nil
 }
 
-func (c *Client) fullURL(suffix string) string {
-	return fmt.Sprintf("%s%s", c.config.BaseURL, suffix)
+func (c *Client) fullURL(suffix, version string) string {
+	if version == "" {
+		return fmt.Sprintf("%s%s", c.config.BaseURL, suffix)
+	}
+	return fmt.Sprintf("%s%s", c.config.VersionUrl[version], suffix)
 }
 
 func (c *Client) handleErrorResp(resp *http.Response) error {

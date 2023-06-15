@@ -21,7 +21,23 @@ func (c *Client) CreateChat(
 ) (response *ChatResponse, err error) {
 
 	urlSuffix := ""
-	req, err := c.requestBuilder.Build(ctx, http.MethodPost, c.fullURL(urlSuffix), request)
+	req, err := c.requestBuilder.Build(ctx, http.MethodPost, c.fullURL(urlSuffix, ""), request)
+	if err != nil {
+		return
+	}
+
+	err = c.sendRequest(req, &response)
+	return
+}
+
+func (c *Client) CreateChatWithVersion(
+	ctx context.Context,
+	version string,
+	request *ChatRequest,
+) (response *ChatResponse, err error) {
+
+	urlSuffix := ""
+	req, err := c.requestBuilder.Build(ctx, http.MethodPost, c.fullURL(urlSuffix, version), request)
 	if err != nil {
 		return
 	}

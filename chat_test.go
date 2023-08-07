@@ -29,7 +29,7 @@ func TestChat(t *testing.T) {
 			},
 		}
 	)
-	chat, err := client.Llm.CreateChatCompletionStream(context.Background(), &req)
+	chat, err := client.Llm.SetUrl("").CreateChatCompletionStream(context.Background(), &req)
 	if err != nil {
 		t.Error(err)
 	}

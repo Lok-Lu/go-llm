@@ -26,6 +26,11 @@ func NewClientWithConfig(config ClientConfig) *Client {
 	}
 }
 
+func (c *Client) SetUrl(url string) *Client {
+	c.config.BaseURL = url
+	return c
+}
+
 func (c *Client) sendRequest(ctx context.Context, req *http.Request, v any) error {
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 	//req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.authToken))

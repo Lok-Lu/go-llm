@@ -2,13 +2,19 @@ package general
 
 type ChatParams struct {
 	MaxNewTokens      int      `json:"max_new_tokens"`
-	Temperature       *float64 `json:"temperature"`
-	TopK              *int     `json:"top_k"`
-	TopP              *float64 `json:"top_p"`
-	NumBeans          *int     `json:"num_beans"`
-	RandomSeed        *int     `json:"random_seed"`
+	Temperature       *float64 `json:"temperature,omitempty"`
+	TopK              *int     `json:"top_k,omitempty"`
+	TopP              *float64 `json:"top_p,omitempty"`
+	Seed              *int     `json:"seed,omitempty"`
+	Stop              []string `json:"stop,omitempty"`
 	DoSample          bool     `json:"do_sample"`
-	RepetitionPenalty *float64 `json:"repetition_penalty"`
+	RepetitionPenalty *float64 `json:"repetition_penalty,omitempty"`
+	BestOf            *int     `json:"best_of,omitempty"`
+	Details           bool     `json:"details"`
+	ReturnFullText    bool     `json:"return_full_text"`
+	Truncate          bool     `json:"truncate"`
+	TypicalP          *int     `json:"typical_p,omitempty"`
+	WaterMark         bool     `json:"water_mark"`
 }
 
 type ChatRequest struct {

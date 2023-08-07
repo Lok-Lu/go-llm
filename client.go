@@ -19,6 +19,11 @@ func (c *LLMClient) WithPharmClient(url string) *LLMClient {
 	return c
 }
 
+func (c *LLMClient) WithPharmClientWithVersions(version map[string]string) *LLMClient {
+	c.Pharm = pharm_lc.NewClientWithVersions(version)
+	return c
+}
+
 func (c *LLMClient) WithGeneralClient(url string) *LLMClient {
 	c.Llm = general.NewClient(url)
 	return c

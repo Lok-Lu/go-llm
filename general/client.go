@@ -56,7 +56,10 @@ func (c *Client) sendStreamRequest(ctx context.Context, req *http.Request) (*htt
 	return c.requestBuilder.SendNoClose(ctx, req)
 }
 
-func (c *Client) fullURL(suffix string) string {
+func (c *Client) fullURL(url, suffix string) string {
+	if url != "" {
+		return fmt.Sprintf("%s%s", url, suffix)
+	}
 	return fmt.Sprintf("%s%s", c.config.BaseURL, suffix)
 }
 

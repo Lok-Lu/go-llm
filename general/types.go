@@ -7,6 +7,7 @@ type ChatParams struct {
 	TopP              *float64 `json:"top_p"`
 	NumBeans          *int     `json:"num_beans"`
 	RandomSeed        *int     `json:"random_seed"`
+	DoSample          bool     `json:"do_sample"`
 	RepetitionPenalty *float64 `json:"repetition_penalty"`
 }
 

@@ -12,9 +12,9 @@ type ChatParams struct {
 	BestOf            *int     `json:"best_of,omitempty"`
 	Details           bool     `json:"details"`
 	ReturnFullText    bool     `json:"return_full_text"`
-	//Truncate          bool   `json:"truncate,omitempty"`
-	TypicalP  *int `json:"typical_p,omitempty"`
-	WaterMark bool `json:"watermark"`
+	Truncate          *int     `json:"truncate,omitempty"`
+	TypicalP          *int     `json:"typical_p,omitempty"`
+	WaterMark         bool     `json:"watermark"`
 }
 
 type ChatRequest struct {

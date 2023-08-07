@@ -13,7 +13,7 @@ func TestChat(t *testing.T) {
 		a   float64 = 1.0
 		b   float64 = 0.6
 		c   float64 = 1.3
-		d   int     = 2
+		d   int     = 1024
 		req         = general.ChatRequest{
 			Inputs: "你是谁[AI]",
 			Parameters: general.ChatParams{
@@ -22,6 +22,7 @@ func TestChat(t *testing.T) {
 				TopK:              &d,
 				TopP:              &b,
 				RepetitionPenalty: &c,
+				Truncate:          &d,
 			},
 		}
 	)

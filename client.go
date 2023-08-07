@@ -1,13 +1,25 @@
 package go_llm
 
-import "github.com/patsnapops/go-llm/pharm_lc"
+import (
+	"github.com/Lok-Lu/go-llm/general"
+	"github.com/Lok-Lu/go-llm/pharm_lc"
+)
 
 type LLMClient struct {
 	Pharm *pharm_lc.Client
+	Llm   *general.Client
 }
 
-func NewClient(config *LLMConfig) *LLMClient {
-	return &LLMClient{
-		Pharm: pharm_lc.NewClientWithConfig(config.Pharm),
-	}
+func NewClient() *LLMClient {
+	return new(LLMClient)
+}
+
+func (c *LLMClient) WithPharmClient(url string) *LLMClient {
+	c.Pharm = pharm_lc.NewClient(url)
+	return c
+}
+
+func (c *LLMClient) WithGeneralClient(url string) *LLMClient {
+	c.Llm = general.NewClient(url)
+	return c
 }

@@ -2,21 +2,43 @@ package go_llm
 
 import (
 	"context"
-	"github.com/patsnapops/go-llm/pharm_lc"
+	"github.com/Lok-Lu/go-llm/general"
 	"testing"
 )
 
 func TestChat(t *testing.T) {
 	url := ""
-	config := NewLLMConfig().SetPharmConfig(url)
-	client := NewClient(config)
-
-	var req = pharm_lc.ChatRequest{
-		Message: "你是gpt几",
-	}
-	chat, err := client.Pharm.CreateChat(context.Background(), &req)
+	client := NewClient().WithGeneralClient(url)
+	var (
+		a   float64 = 1.0
+		b   float64 = 0.6
+		c   float64 = 1.3
+		d   int     = 2
+		e   int     = 1
+		f   int     = 0
+		req         = general.ChatRequest{
+			Inputs: "",
+			Parameters: general.ChatParams{
+				MaxNewTokens:      1024,
+				Temperature:       &a,
+				TopK:              &d,
+				TopP:              &b,
+				NumBeans:          &e,
+				RandomSeed:        &f,
+				RepetitionPenalty: &c,
+			},
+		}
+	)
+	chat, err := client.Llm.CreateChatCompletionStream(context.Background(), &req)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(chat)
+	for {
+		r, err := chat.Recv()
+		if err != nil {
+			break
+		}
+		t.Log(r)
+	}
+	//t.Log(chat)
 }

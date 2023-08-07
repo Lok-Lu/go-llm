@@ -1,3 +1,3 @@
-module github.com/patsnapops/go-llm
+module github.com/Lok-Lu/go-llm
 
 go 1.19

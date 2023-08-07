@@ -3,8 +3,8 @@ package pharm_lc
 import (
 	"encoding/json"
 	"fmt"
-	myerr "github.com/patsnapops/go-llm/error"
-	llm "github.com/patsnapops/go-llm/request"
+	myerr "github.com/Lok-Lu/go-llm/error"
+	llm "github.com/Lok-Lu/go-llm/internal"
 	"io"
 	"net/http"
 )
@@ -27,7 +27,7 @@ func NewClientWithVersions(versions map[string]string) *Client {
 func NewClientWithConfig(config ClientConfig) *Client {
 	return &Client{
 		config:         config,
-		requestBuilder: llm.NewRequestBuilder(),
+		requestBuilder: llm.NewRequestBuilder(config.HTTPClient),
 	}
 }
 

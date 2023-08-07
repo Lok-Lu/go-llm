@@ -14,31 +14,27 @@ func TestChat(t *testing.T) {
 		b   float64 = 0.6
 		c   float64 = 1.3
 		d   int     = 2
-		e   int     = 1
-		f   int     = 0
 		req         = general.ChatRequest{
-			Inputs: "",
+			Inputs: "你是谁[AI]",
 			Parameters: general.ChatParams{
 				MaxNewTokens:      1024,
 				Temperature:       &a,
 				TopK:              &d,
 				TopP:              &b,
-				NumBeans:          &e,
-				RandomSeed:        &f,
 				RepetitionPenalty: &c,
 			},
 		}
 	)
-	chat, err := client.Llm.SetUrl("").CreateChatCompletionStream(context.Background(), &req)
+	chat, err := client.Llm.CreateChat(context.Background(), url, &req)
 	if err != nil {
 		t.Error(err)
 	}
-	for {
-		r, err := chat.Recv()
-		if err != nil {
-			break
-		}
-		t.Log(r)
-	}
-	//t.Log(chat)
+	//for {
+	//	r, err := chat.Recv()
+	//	if err != nil {
+	//		break
+	//	}
+	//	t.Log(r)
+	//}
+	t.Log(chat)
 }

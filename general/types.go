@@ -7,14 +7,14 @@ type ChatParams struct {
 	TopP              *float64 `json:"top_p,omitempty"`
 	Seed              *int     `json:"seed,omitempty"`
 	Stop              []string `json:"stop,omitempty"`
-	DoSample          bool     `json:"do_sample"`
+	DoSample          bool     `json:"do_sample,omitempty"`
 	RepetitionPenalty *float64 `json:"repetition_penalty,omitempty"`
 	BestOf            *int     `json:"best_of,omitempty"`
-	Details           bool     `json:"details"`
-	ReturnFullText    bool     `json:"return_full_text"`
+	Details           bool     `json:"details,omitempty"`
+	ReturnFullText    bool     `json:"return_full_text,omitempty"`
 	Truncate          *int     `json:"truncate,omitempty"`
 	TypicalP          *int     `json:"typical_p,omitempty"`
-	WaterMark         bool     `json:"watermark"`
+	WaterMark         bool     `json:"watermark,omitempty"`
 }
 
 type ChatRequest struct {

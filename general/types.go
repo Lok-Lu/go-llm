@@ -11,7 +11,7 @@ type ChatParams struct {
 	RepetitionPenalty *float64 `json:"repetition_penalty,omitempty"`
 	BestOf            *int     `json:"best_of,omitempty"`
 	Details           bool     `json:"details,omitempty"`
-	ReturnFullText    bool     `json:"return_full_text,omitempty"`
+	ReturnFullText    *bool    `json:"return_full_text,omitempty"`
 	Truncate          *int     `json:"truncate,omitempty"`
 	TypicalP          *int     `json:"typical_p,omitempty"`
 	WaterMark         bool     `json:"watermark,omitempty"`

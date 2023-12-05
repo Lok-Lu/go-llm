@@ -51,12 +51,13 @@ func (b *httpRequestBuilder) SendNoClose(ctx context.Context, req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-
+	
 	if isFailureStatusCode(res) {
 		return nil, handleErrorResp(res)
 	}
 	return res, nil
 }
+
 
 func (b *httpRequestBuilder) Send(ctx context.Context, req *http.Request, v any) error {
 	res, err := b.client.Do(req)
@@ -64,6 +65,7 @@ func (b *httpRequestBuilder) Send(ctx context.Context, req *http.Request, v any)
 		return err
 	}
 	defer res.Body.Close()
+
 	if isFailureStatusCode(res) {
 		return handleErrorResp(res)
 	}

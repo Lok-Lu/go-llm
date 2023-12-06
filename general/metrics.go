@@ -4,16 +4,21 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"time"
 )
 
-func (c *Client) GetMetrics(ctx context.Context, url string) (response []byte, err error) {
+func (c *Client) GetMetrics(ctx context.Context, url string, timeout time.Duration) (response []byte, err error) {
 	urlSuffix := "/metrics"
 	req, err := c.requestBuilder.Build(ctx, http.MethodGet, c.fullURL(url, urlSuffix), nil)
 	if err != nil {
 		return
 	}
-	resp, err := c.requestBuilder.SendNoClose(ctx, req)
-	defer resp.Body.Close()
+	resp, err := c.requestBuilder.SendNoCloseWithCustomClient(ctx, &http.Client{
+		Timeout: timeout,
+	}, req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -22,6 +27,6 @@ func (c *Client) GetMetrics(ctx context.Context, url string) (response []byte, e
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return response, nil
 }

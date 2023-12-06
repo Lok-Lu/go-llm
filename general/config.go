@@ -25,3 +25,4 @@ func (c ClientConfig) WithHttpClientConfig(client *http.Client) ClientConfig {
 	c.HTTPClient = client
 	return c
 }
+

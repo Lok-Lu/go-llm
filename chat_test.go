@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"testing"
+	"time"
 )
 
 func TestChat(t *testing.T) {
@@ -37,7 +38,7 @@ func TestChat(t *testing.T) {
 	//	}
 	//	t.Log(r)
 	//}
-	metric, err := client.Llm.GetMetrics(context.Background(), url)
+	metric, err := client.Llm.GetMetrics(context.Background(), url, time.Second*3)
 	if err != nil {
 		t.Error(err)
 	}

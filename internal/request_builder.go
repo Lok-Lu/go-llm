@@ -5,14 +5,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	wraperr "github.com/Lok-Lu/go-llm/error"
 	"io"
 	"net/http"
+
+	wraperr "github.com/Lok-Lu/go-llm/error"
 )
 
 type RequestBuilder interface {
 	Build(ctx context.Context, method, url string, request any) (*http.Request, error)
 	Send(ctx context.Context, req *http.Request, v any) error
+	SendNoCloseWithCustomClient(ctx context.Context, client *http.Client, req *http.Request) (*http.Response, error)
 	SendNoClose(ctx context.Context, req *http.Request) (*http.Response, error)
 }
 
@@ -46,18 +48,29 @@ func (b *httpRequestBuilder) Build(ctx context.Context, method, url string, requ
 	)
 }
 
-func (b *httpRequestBuilder) SendNoClose(ctx context.Context, req *http.Request) (*http.Response, error) {
-	res, err := b.client.Do(req)
+func (b *httpRequestBuilder) SendNoCloseWithCustomClient(ctx context.Context, client *http.Client, req *http.Request) (*http.Response, error) {
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if isFailureStatusCode(res) {
 		return nil, handleErrorResp(res)
 	}
 	return res, nil
 }
 
+func (b *httpRequestBuilder) SendNoClose(ctx context.Context, req *http.Request) (*http.Response, error) {
+	res, err := b.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if isFailureStatusCode(res) {
+		return nil, handleErrorResp(res)
+	}
+	return res, nil
+}
 
 func (b *httpRequestBuilder) Send(ctx context.Context, req *http.Request, v any) error {
 	res, err := b.client.Do(req)

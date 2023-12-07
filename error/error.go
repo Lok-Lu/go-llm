@@ -3,7 +3,15 @@ package error
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 )
+
+var ServiceUnavailableError = &ErrorResponse{
+	Error: &APIError{
+		Code:           http.StatusServiceUnavailable,
+		Message:        "service unavailable",
+		HTTPStatusCode: http.StatusServiceUnavailable,
+	}}
 
 // APIError provides error information returned by the bard API.
 type APIError struct {

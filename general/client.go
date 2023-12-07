@@ -3,10 +3,11 @@ package general
 import (
 	"context"
 	"fmt"
-	wraperr "github.com/Lok-Lu/go-llm/error"
-	. "github.com/Lok-Lu/go-llm/internal"
 	"io"
 	"net/http"
+
+	wraperr "github.com/Lok-Lu/go-llm/error"
+	. "github.com/Lok-Lu/go-llm/internal"
 )
 
 type Client struct {
@@ -66,7 +67,6 @@ func (c *Client) fullURL(url, suffix string) string {
 func (c *Client) handleErrorResp(resp *http.Response) error {
 	var errRes wraperr.ErrorResponse
 	errByte, _ := io.ReadAll(resp.Body)
-	fmt.Println(errByte)
 	errRes.Error = &wraperr.APIError{
 		Code:           resp.StatusCode,
 		Message:        string(errByte),

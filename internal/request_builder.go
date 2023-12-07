@@ -51,7 +51,7 @@ func (b *httpRequestBuilder) Build(ctx context.Context, method, url string, requ
 func (b *httpRequestBuilder) SendNoCloseWithCustomClient(ctx context.Context, client *http.Client, req *http.Request) (*http.Response, error) {
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, handleErrorWithOutResp(err)
 	}
 
 	if isFailureStatusCode(res) {
@@ -63,7 +63,7 @@ func (b *httpRequestBuilder) SendNoCloseWithCustomClient(ctx context.Context, cl
 func (b *httpRequestBuilder) SendNoClose(ctx context.Context, req *http.Request) (*http.Response, error) {
 	res, err := b.client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, handleErrorWithOutResp(err)
 	}
 
 	if isFailureStatusCode(res) {
@@ -75,7 +75,7 @@ func (b *httpRequestBuilder) SendNoClose(ctx context.Context, req *http.Request)
 func (b *httpRequestBuilder) Send(ctx context.Context, req *http.Request, v any) error {
 	res, err := b.client.Do(req)
 	if err != nil {
-		return err
+		return handleErrorWithOutResp(err)
 	}
 	defer res.Body.Close()
 
@@ -95,6 +95,17 @@ func handleErrorResp(resp *http.Response) error {
 	}
 	return fmt.Errorf("error, status code: %d, message: %w", resp.StatusCode, errRes.Error)
 }
+
+func handleErrorWithOutResp(err error) error {
+	var errRes = wraperr.ServiceUnavailableError
+	errRes.Error = &wraperr.APIError{
+		Code:           http.StatusServiceUnavailable,
+		Message:        err.Error(),
+		HTTPStatusCode: http.StatusServiceUnavailable,
+	}
+	return fmt.Errorf("error, status code: %d, message: %w", http.StatusServiceUnavailable, errRes.Error)
+}
+
 
 func isFailureStatusCode(resp *http.Response) bool {
 	return resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusBadRequest

@@ -14,6 +14,9 @@ func (c *Client) CreateChatCompletionStream(
 	urlSuffix := "/generate_stream"
 
 	req, err := c.requestBuilder.Build(ctx, http.MethodPost, c.fullURL(url, urlSuffix), request)
+	if err != nil {
+		return 
+	}
 
 	resp, err := c.sendStreamRequest(ctx, req)
 	if err != nil {

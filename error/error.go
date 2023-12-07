@@ -6,12 +6,15 @@ import (
 	"net/http"
 )
 
-var ServiceUnavailableError = &ErrorResponse{
-	Error: &APIError{
-		Code:           http.StatusServiceUnavailable,
-		Message:        "service unavailable",
-		HTTPStatusCode: http.StatusServiceUnavailable,
-	}}
+var (
+	ServiceUnavailable = &ErrorResponse{
+		Error: &APIError{
+			Code:           http.StatusServiceUnavailable,
+			Message:        "service unavailable",
+			HTTPStatusCode: http.StatusServiceUnavailable,
+		}}
+	ErrServiceUnavailable = fmt.Errorf("error, status code: %d, message: %w", ServiceUnavailable.Error.HTTPStatusCode, ServiceUnavailable.Error)
+)
 
 // APIError provides error information returned by the bard API.
 type APIError struct {

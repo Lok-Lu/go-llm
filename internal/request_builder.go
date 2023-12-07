@@ -97,7 +97,7 @@ func handleErrorResp(resp *http.Response) error {
 }
 
 func handleErrorWithOutResp(err error) error {
-	var errRes = wraperr.ServiceUnavailableError
+	var errRes = wraperr.ServiceUnavailable
 	errRes.Error = &wraperr.APIError{
 		Code:           http.StatusServiceUnavailable,
 		Message:        err.Error(),

@@ -15,6 +15,7 @@ type ChatParams struct {
 	Truncate          *int     `json:"truncate,omitempty"`
 	TypicalP          *int     `json:"typical_p,omitempty"`
 	WaterMark         bool     `json:"watermark,omitempty"`
+	NumBeams          *int     `json:"num_beams,omitempty"`
 }
 
 type ChatRequest struct {

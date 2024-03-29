@@ -82,7 +82,7 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 			if hasErrorPrefix {
 				noSpaceLine = bytes.TrimPrefix(noSpaceLine, headerData)
 			}
-			
+
 			writeErr := stream.errAccumulator.Write(noSpaceLine)
 			if writeErr != nil {
 				return *new(T), writeErr
@@ -92,6 +92,10 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 				return *new(T), ErrTooManyEmptyStreamMessages
 			}
 
+			respErr := stream.unmarshalError()
+			if respErr != nil {
+				return *new(T), fmt.Errorf("error, %w", respErr.Error)
+			}
 			continue
 		}
 

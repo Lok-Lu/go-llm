@@ -19,6 +19,8 @@ var (
 // APIError provides error information returned by the bard API.
 type APIError struct {
 	Code           any    `json:"code,omitempty"`
+	Errors         string `json:"error,omitempty"`
+	ErrorType      string `json:"error_type,omitempty"`
 	Message        string `json:"message"`
 	HTTPStatusCode int    `json:"-"`
 }

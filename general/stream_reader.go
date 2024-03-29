@@ -5,14 +5,17 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	wraperr "github.com/Lok-Lu/go-llm/error"
-	"github.com/Lok-Lu/go-llm/internal"
 	"io"
 	"net/http"
+
+	wraperr "github.com/Lok-Lu/go-llm/error"
+	"github.com/Lok-Lu/go-llm/internal"
 )
 
 var (
 	ErrTooManyEmptyStreamMessages = errors.New("stream has sent too many empty messages")
+	headerData                    = []byte("data:")
+	errorPrefix                   = []byte(`data:{"error":`)
 )
 
 type StreamType interface {
@@ -51,8 +54,10 @@ func (stream *StreamReader[T]) Recv() (response T, err error) {
 }
 
 func (stream *StreamReader[T]) processLines() (T, error) {
-	var emptyMessagesCount uint
-
+	var (
+		emptyMessagesCount uint
+		hasErrorPrefix     bool
+	)
 	for {
 		rawLine, readErr := stream.reader.ReadBytes('\n')
 		if readErr != nil {
@@ -68,9 +73,16 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 			return *new(T), readErr
 		}
 
-		var headerData = []byte("data:")
 		noSpaceLine := bytes.TrimSpace(rawLine)
+		if bytes.HasPrefix(noSpaceLine, errorPrefix) {
+			hasErrorPrefix = true
+		}
+
 		if !bytes.HasPrefix(noSpaceLine, headerData) {
+			if hasErrorPrefix {
+				noSpaceLine = bytes.TrimPrefix(noSpaceLine, headerData)
+			}
+			
 			writeErr := stream.errAccumulator.Write(noSpaceLine)
 			if writeErr != nil {
 				return *new(T), writeErr

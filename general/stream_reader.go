@@ -78,7 +78,7 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 			hasErrorPrefix = true
 		}
 
-		if !bytes.HasPrefix(noSpaceLine, headerData) {
+		if !bytes.HasPrefix(noSpaceLine, headerData) || hasErrorPrefix {
 			if hasErrorPrefix {
 				noSpaceLine = bytes.TrimPrefix(noSpaceLine, headerData)
 			}

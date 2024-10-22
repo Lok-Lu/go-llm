@@ -6,9 +6,11 @@ import (
 )
 
 type RerankRequest struct {
-	Model string   `json:"model"`
-	Query string   `json:"query"`
-	Texts []string `json:"texts"`
+	Model      string   `json:"model"`
+	Query      string   `json:"query"`
+	Texts      []string `json:"texts"`
+	RawScores  bool     `json:"raw_scores,omitempty" example:"false"`
+	ReturnText bool     `json:"return_text,omitempty" example:"false"`
 }
 
 type ReranKResponse struct {
@@ -58,5 +60,9 @@ func (c *Client) CreateRerank(
 
 	var originalReranKResponse OriginalReranKResponse
 	err = c.sendRequest(ctx, req, &originalReranKResponse)
-	return originalReranKResponse.ToReranKResponse(request.Model), err
+
+	if err != nil {
+		return
+	}
+	return originalReranKResponse.ToReranKResponse(request.Model), nil
 }

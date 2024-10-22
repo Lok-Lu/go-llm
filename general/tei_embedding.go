@@ -59,3 +59,23 @@ func (c *Client) CreateEmbedding(
 	err = c.sendRequest(ctx, req, &originalEmbeddingResponse)
 	return originalEmbeddingResponse.ToEmbeddingResponse(request.Model), err
 }
+
+func (c *Client) CreateEmbeddingWithVersion(
+	ctx context.Context,
+	url string,
+	request *EmbeddingRequest,
+) (response *EmbeddingResponse, err error) {
+	urlSuffix := "/v1/embeddings"
+	req, err := c.requestBuilder.Build(ctx, http.MethodPost, c.fullURL(url, urlSuffix), request)
+	if err != nil {
+		return
+	}
+
+	var originalEmbeddingResponse OriginalEmbeddingResponse
+	err = c.sendRequest(ctx, req, &originalEmbeddingResponse)
+
+	if err != nil {
+		return
+	}
+	return originalEmbeddingResponse.ToEmbeddingResponse(request.Model), nil
+}

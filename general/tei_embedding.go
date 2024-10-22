@@ -57,7 +57,10 @@ func (c *Client) CreateEmbedding(
 
 	var originalEmbeddingResponse OriginalEmbeddingResponse
 	err = c.sendRequest(ctx, req, &originalEmbeddingResponse)
-	return originalEmbeddingResponse.ToEmbeddingResponse(request.Model), err
+	if err != nil {
+		return
+	}
+	return originalEmbeddingResponse.ToEmbeddingResponse(request.Model), nil
 }
 
 func (c *Client) CreateEmbeddingWithVersion(

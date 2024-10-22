@@ -15,8 +15,8 @@ type Client struct {
 	requestBuilder RequestBuilder
 }
 
-func NewClient(url string) *Client {
-	config := DefaultConfig(url)
+func NewClient(url, token string) *Client {
+	config := DefaultConfig(url, token)
 	return NewClientWithConfig(config)
 }
 
@@ -41,6 +41,11 @@ func (c *Client) sendRequest(ctx context.Context, req *http.Request, v any) erro
 	contentType := req.Header.Get("Content-Type")
 	if contentType == "" {
 		req.Header.Set("Content-Type", "application/json")
+	}
+
+	if c.config.authToken != "" {
+		// for eas
+		req.Header.Set("Authorization", c.config.authToken)
 	}
 
 	err := c.requestBuilder.Send(ctx, req, v)

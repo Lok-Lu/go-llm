@@ -7,14 +7,14 @@ type ChatParams struct {
 	TopP              *float64 `json:"top_p,omitempty"`
 	Seed              *int     `json:"seed,omitempty"`
 	Stop              []string `json:"stop,omitempty"`
-	DoSample          *bool     `json:"do_sample,omitempty"`
+	DoSample          *bool    `json:"do_sample,omitempty"`
 	RepetitionPenalty *float64 `json:"repetition_penalty,omitempty"`
 	BestOf            *int     `json:"best_of,omitempty"`
-	Details           *bool     `json:"details,omitempty"`
+	Details           *bool    `json:"details,omitempty"`
 	ReturnFullText    *bool    `json:"return_full_text,omitempty"`
 	Truncate          *int     `json:"truncate,omitempty"`
 	TypicalP          *int     `json:"typical_p,omitempty"`
-	WaterMark         *bool     `json:"watermark,omitempty"`
+	WaterMark         *bool    `json:"watermark,omitempty"`
 	NumBeams          *int     `json:"num_beams,omitempty"`
 }
 
@@ -27,8 +27,7 @@ type ChatResponse struct {
 	GeneratedText string `json:"generated_text"`
 }
 
-// stream
-
+// strea
 type ChatStreamToken struct {
 	ID      uint    `json:"id"`
 	Text    string  `json:"text"`
@@ -62,3 +61,4 @@ type ChatStreamResponse struct {
 type ChatCompletionStream struct {
 	*StreamReader[ChatStreamResponse]
 }
+

@@ -24,7 +24,7 @@ func (c *LLMClient) WithPharmClientWithVersions(version map[string]string) *LLMC
 	return c
 }
 
-func (c *LLMClient) WithGeneralClient(url string) *LLMClient {
-	c.Llm = general.NewClient(url)
+func (c *LLMClient) WithGeneralClient(url, token string) *LLMClient {
+	c.Llm = general.NewClient(url, token)
 	return c
 }

@@ -6,15 +6,16 @@ import (
 )
 
 type Embedding struct {
-	Object    string    `json:"object"`
-	Embedding []float32 `json:"embedding"`
-	Index     int       `json:"index"`
+	Object    string `json:"object"`
+	Embedding any    `json:"embedding"` // []float32、string
+	Index     int    `json:"index"`
 }
 
 type EmbeddingResponse struct {
 	Object string      `json:"object"`
 	Data   []Embedding `json:"data"`
 	Model  string      `json:"model"`
+	Usage  Usage       `json:"usage"`
 }
 
 type OriginalEmbeddingResponse [][]float32
@@ -63,10 +64,18 @@ func (c *Client) CreateEmbedding(
 	return originalEmbeddingResponse.ToEmbeddingResponse(request.Model), nil
 }
 
-func (c *Client) CreateEmbeddingWithVersion(
+type OpenaiEmbeddingRequest struct {
+	Input          any    `json:"input"`
+	Model          string `json:"model"`
+	User           string `json:"user"`
+	EncodingFormat string `json:"encoding_format,omitempty"`
+	Dimensions     int    `json:"dimensions,omitempty"`
+}
+
+func (c *Client) CreateEmbeddingLikeOpenai(
 	ctx context.Context,
 	url string,
-	request *EmbeddingRequest,
+	request *OpenaiEmbeddingRequest,
 ) (response *EmbeddingResponse, err error) {
 	urlSuffix := "/v1/embeddings"
 	req, err := c.requestBuilder.Build(ctx, http.MethodPost, c.fullURL(url, urlSuffix), request)
@@ -74,11 +83,10 @@ func (c *Client) CreateEmbeddingWithVersion(
 		return
 	}
 
-	var originalEmbeddingResponse OriginalEmbeddingResponse
-	err = c.sendRequest(ctx, req, &originalEmbeddingResponse)
+	err = c.sendRequest(ctx, req, &response)
 
 	if err != nil {
 		return
 	}
-	return originalEmbeddingResponse.ToEmbeddingResponse(request.Model), nil
+	return
 }

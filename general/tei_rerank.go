@@ -30,10 +30,10 @@ type OriginalReranKResponse []Rerank
 func (e OriginalReranKResponse) ToReranKResponse(model string) *ReranKResponse {
 	var data []Rerank
 
-	for index, rerank := range e {
+	for _, rerank := range e {
 		data = append(data, Rerank{
 			Object: "rerank",
-			Index:  index,
+			Index:  rerank.Index,
 			Score:  rerank.Score,
 		})
 	}

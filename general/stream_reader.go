@@ -15,7 +15,8 @@ import (
 var (
 	ErrTooManyEmptyStreamMessages = errors.New("stream has sent too many empty messages")
 	headerData                    = []byte("data:")
-	errorPrefix                   = []byte(`data:{"error":`)
+	errorPrefix                   = []byte(`data: {"error":`)
+	errorPrefixNoSpace            = []byte(`data:{"error":`)
 )
 
 type StreamType interface {
@@ -74,7 +75,7 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 		}
 
 		noSpaceLine := bytes.TrimSpace(rawLine)
-		if bytes.HasPrefix(noSpaceLine, errorPrefix) {
+		if bytes.HasPrefix(noSpaceLine, errorPrefix) || bytes.HasPrefix(noSpaceLine, errorPrefixNoSpace) {
 			hasErrorPrefix = true
 		}
 

@@ -32,6 +32,14 @@ func (c *Client) SetUrl(url string) *Client {
 	return c
 }
 
+func (c *Client) SetToken(token string) *Client {
+	if token == "" {
+		return c
+	}
+	c.config.authToken = token
+	return c
+}
+
 func (c *Client) sendRequest(ctx context.Context, req *http.Request, v any) error {
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 	//req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.authToken))

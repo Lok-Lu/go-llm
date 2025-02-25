@@ -49,7 +49,6 @@ func (c *Client) sendRequest(ctx context.Context, req *http.Request, v any) erro
 	}
 
 	if c.config.authToken != "" {
-		// for eas
 		req.Header.Set("Authorization", c.config.authToken)
 	}
 
@@ -64,6 +63,10 @@ func (c *Client) sendStreamRequest(ctx context.Context, req *http.Request) (*htt
 	req.Header.Set("Cache-Control", "no-cache")
 	req.Header.Set("Connection", "keep-alive")
 
+	if c.config.authToken != "" {
+		req.Header.Set("Authorization", c.config.authToken)
+	}
+	
 	return c.requestBuilder.SendNoClose(ctx, req)
 }
 

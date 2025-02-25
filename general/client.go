@@ -33,9 +33,6 @@ func (c *Client) SetUrl(url string) *Client {
 }
 
 func (c *Client) SetToken(token string) *Client {
-	if token == "" {
-		return c
-	}
 	c.config.authToken = token
 	return c
 }

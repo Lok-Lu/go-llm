@@ -29,7 +29,7 @@ type RerankRequest struct {
 func (r *RerankRequest) MarshalJSON() ([]byte, error) {
 	switch r.InferenceFrame {
 	case RerankInferenceFrameTEI:
-		return json.Marshal(r)
+		return json.Marshal(*r)
 	case RerankInferenceFrameInfinity:
 		req := struct {
 			Model          string               `json:"model"`

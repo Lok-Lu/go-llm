@@ -22,7 +22,7 @@ type RerankRequest struct {
 	ReturnText bool     `json:"return_text,omitempty" example:"false"`
 	// Documents      []string             `json:"documents,omitempty"`
 	// ReturnDocument bool                 `json:"return_document,omitempty" example:"false"`
-	TopN           int                  `json:"top_n,omitempty" example:"1"`
+	TopN           *int                 `json:"top_n,omitempty" example:"1"`
 	InferenceFrame RerankInferenceFrame `json:"inference_frame"`
 }
 
@@ -37,7 +37,7 @@ func (r *RerankRequest) MarshalJSON() ([]byte, error) {
 			Texts          []string             `json:"documents,omitempty"`
 			RawScores      bool                 `json:"raw_scores,omitempty" example:"false"`
 			ReturnText     bool                 `json:"return_document,omitempty" example:"false"`
-			TopN           int                  `json:"top_n,omitempty" example:"1"`
+			TopN           *int                 `json:"top_n,omitempty" example:"1"`
 			InferenceFrame RerankInferenceFrame `json:"inference_frame"`
 		}(*r)
 
@@ -61,7 +61,7 @@ func (r *RerankRequest) UnmarshalJSON(data []byte) error {
 			Texts          []string             `json:"documents,omitempty"`
 			RawScores      bool                 `json:"raw_scores,omitempty" example:"false"`
 			ReturnText     bool                 `json:"return_document,omitempty" example:"false"`
-			TopN           int                  `json:"top_n,omitempty" example:"1"`
+			TopN           *int                 `json:"top_n,omitempty" example:"1"`
 			InferenceFrame RerankInferenceFrame `json:"inference_frame"`
 		}(*r)
 

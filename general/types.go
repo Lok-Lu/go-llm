@@ -1,7 +1,5 @@
 package general
 
-import "encoding/json"
-
 type DataType string
 
 const (
@@ -23,14 +21,8 @@ const (
 )
 
 type GrammarParams struct {
-	Type  GrammarType    `json:"type"`
-	Value json.Marshaler `json:"value"`
-}
-
-type Definition map[string]any
-
-func (d Definition) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d)
+	Type  GrammarType `json:"type"`
+	Value any         `json:"value"`
 }
 
 type ChatParams struct {

@@ -12,7 +12,7 @@ type RerankInferenceFrame string
 const (
 	RerankInferenceFrameTEI      RerankInferenceFrame = "tei"
 	RerankInferenceFrameInfinity RerankInferenceFrame = "infinity"
-	RerankInferenceFrameVLLM    RerankInferenceFrame = "vllm"
+	RerankInferenceFrameVLLM     RerankInferenceFrame = "vllm"
 )
 
 type RerankRequest struct {
@@ -84,7 +84,7 @@ type Rerank struct {
 	Score          *float32 `json:"score,omitempty"`
 	Object         string   `json:"object,omitempty"`
 	RelevanceScore *float32 `json:"relevance_score,omitempty"`
-	Document       string   `json:"document,omitempty"`
+	Document       any      `json:"document,omitempty"`
 }
 
 type TEIOriginalReranKResponse []Rerank
@@ -119,11 +119,12 @@ type InfinityOriginalReranKResponse struct {
 func (e InfinityOriginalReranKResponse) ToReranKResponse(model string) *ReranKResponse {
 	var data []Rerank
 	for _, rerank := range e.Results {
-		fmt.Println(rerank)
+		// fmt.Println(rerank)
 		data = append(data, Rerank{
-			Object: e.Object,
-			Index:  rerank.Index,
-			Score:  rerank.RelevanceScore,
+			Object:   "rerank",
+			Index:    rerank.Index,
+			Score:    rerank.RelevanceScore,
+			Document: rerank.Document,
 		})
 	}
 

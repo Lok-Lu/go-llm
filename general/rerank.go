@@ -12,6 +12,7 @@ type RerankInferenceFrame string
 const (
 	RerankInferenceFrameTEI      RerankInferenceFrame = "tei"
 	RerankInferenceFrameInfinity RerankInferenceFrame = "infinity"
+	RerankInferenceFrameVLLM    RerankInferenceFrame = "vllm"
 )
 
 type RerankRequest struct {
@@ -30,7 +31,7 @@ func (r *RerankRequest) MarshalJSON() ([]byte, error) {
 	switch r.InferenceFrame {
 	case RerankInferenceFrameTEI:
 		return json.Marshal(*r)
-	case RerankInferenceFrameInfinity:
+	case RerankInferenceFrameInfinity, RerankInferenceFrameVLLM:
 		req := struct {
 			Model          string               `json:"model"`
 			Query          string               `json:"query"`
@@ -54,7 +55,7 @@ func (r *RerankRequest) UnmarshalJSON(data []byte) error {
 	case RerankInferenceFrameTEI:
 		err = json.Unmarshal(data, r)
 		return err
-	case RerankInferenceFrameInfinity:
+	case RerankInferenceFrameInfinity, RerankInferenceFrameVLLM:
 		req := struct {
 			Model          string               `json:"model"`
 			Query          string               `json:"query"`
@@ -144,7 +145,7 @@ func (c *Client) switchRerankResponse(ctx context.Context, req *http.Request, fr
 			return nil, err
 		}
 		return originalReranKResponse.ToReranKResponse(model), nil
-	case RerankInferenceFrameInfinity:
+	case RerankInferenceFrameInfinity, RerankInferenceFrameVLLM:
 		var originalReranKResponse InfinityOriginalReranKResponse
 		err = c.sendRequest(ctx, req, &originalReranKResponse)
 		if err != nil {

@@ -95,9 +95,9 @@ type WrapperChatStreamResponse struct {
 }
 
 type ChatStreamResponse struct {
-	GeneratedText string          `json:"generated_text,omitempty"`
-	Token         ChatStreamToken `json:"token"`
-	Details       string          `json:"details"`
+	GeneratedText string              `json:"generated_text,omitempty"`
+	Token         ChatStreamToken     `json:"token"`
+	Details       ChatResponseDetails `json:"details"`
 }
 
 type ChatCompletionStream struct {

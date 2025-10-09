@@ -49,6 +49,21 @@ type ChatRequest struct {
 	Parameters ChatParams `json:"parameters"`
 }
 
+type FinishReason string
+
+const (
+	FinishReasonEosToken     FinishReason = "eos_token"
+	FinishReasonLength       FinishReason = "length"
+	FinishReasonStopSequence FinishReason = "stop_sequence"
+)
+
+type ChatResponseDetails struct {
+	// BestOfSequences []string `json:"best_of_sequences"`
+	FinishReason    FinishReason `json:"finish_reason"`
+	GeneratedTokens int32        `json:"generated_tokens"`
+	InputLength     int32        `json:"input_length,omitempty"`
+}
+
 type ChatResponse struct {
 	GeneratedText string `json:"generated_text"`
 }
@@ -73,9 +88,9 @@ type ChatChoice struct {
 }
 
 type WrapperChatStreamResponse struct {
-	GeneratedText string       `json:"generated_text,omitempty"`
-	Details       string       `json:"details"`
-	Choices       []ChatChoice `json:"choices"`
+	GeneratedText string              `json:"generated_text,omitempty"`
+	Details       ChatResponseDetails `json:"details"`
+	Choices       []ChatChoice        `json:"choices"`
 }
 
 type ChatStreamResponse struct {

@@ -65,8 +65,8 @@ type ChatResponseDetails struct {
 }
 
 type ChatResponse struct {
-	GeneratedText string              `json:"generated_text"`
-	Details       ChatResponseDetails `json:"details"`
+	GeneratedText string               `json:"generated_text"`
+	Details       *ChatResponseDetails `json:"details"`
 }
 
 // strea
@@ -89,15 +89,15 @@ type ChatChoice struct {
 }
 
 type WrapperChatStreamResponse struct {
-	GeneratedText string              `json:"generated_text,omitempty"`
-	Details       ChatResponseDetails `json:"details"`
-	Choices       []ChatChoice        `json:"choices"`
+	GeneratedText string               `json:"generated_text,omitempty"`
+	Details       *ChatResponseDetails `json:"details"`
+	Choices       []ChatChoice         `json:"choices"`
 }
 
 type ChatStreamResponse struct {
-	GeneratedText string              `json:"generated_text,omitempty"`
-	Token         ChatStreamToken     `json:"token"`
-	Details       ChatResponseDetails `json:"details"`
+	GeneratedText string               `json:"generated_text,omitempty"`
+	Token         ChatStreamToken      `json:"token"`
+	Details       *ChatResponseDetails `json:"details"`
 }
 
 type ChatCompletionStream struct {

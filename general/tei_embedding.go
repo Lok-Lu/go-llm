@@ -57,7 +57,7 @@ func (c *Client) CreateEmbedding(
 	}
 
 	var originalEmbeddingResponse OriginalEmbeddingResponse
-	err = c.sendRequest(ctx, req, &originalEmbeddingResponse)
+	_, err = c.sendRequest(ctx, req, &originalEmbeddingResponse)
 	if err != nil {
 		return
 	}
@@ -83,7 +83,7 @@ func (c *Client) CreateEmbeddingLikeOpenai(
 		return
 	}
 
-	err = c.sendRequest(ctx, req, &response)
+	_, err = c.sendRequest(ctx, req, &response)
 
 	if err != nil {
 		return

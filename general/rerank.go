@@ -141,14 +141,14 @@ func (c *Client) switchRerankResponse(ctx context.Context, req *http.Request, fr
 	switch frame {
 	case RerankInferenceFrameTEI:
 		var originalReranKResponse TEIOriginalReranKResponse
-		err = c.sendRequest(ctx, req, &originalReranKResponse)
+		_,err = c.sendRequest(ctx, req, &originalReranKResponse)
 		if err != nil {
 			return nil, err
 		}
 		return originalReranKResponse.ToReranKResponse(model), nil
 	case RerankInferenceFrameInfinity, RerankInferenceFrameVLLM:
 		var originalReranKResponse InfinityOriginalReranKResponse
-		err = c.sendRequest(ctx, req, &originalReranKResponse)
+		_, err = c.sendRequest(ctx, req, &originalReranKResponse)
 		if err != nil {
 			return nil, err
 		}

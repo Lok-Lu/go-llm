@@ -37,7 +37,7 @@ func (c *Client) SetToken(token string) *Client {
 	return c
 }
 
-func (c *Client) sendRequest(ctx context.Context, req *http.Request, v any) error {
+func (c *Client) sendRequest(ctx context.Context, req *http.Request, v any) (header *http.Header, err error) {
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 	//req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.authToken))
 
@@ -52,8 +52,8 @@ func (c *Client) sendRequest(ctx context.Context, req *http.Request, v any) erro
 		req.Header.Set("Authorization", c.config.authToken)
 	}
 
-	err := c.requestBuilder.Send(ctx, req, v)
-	return err
+	header, err = c.requestBuilder.Send(ctx, req, v)
+	return header, err
 }
 
 func (c *Client) sendStreamRequest(ctx context.Context, req *http.Request) (*http.Response, error) {
@@ -66,7 +66,7 @@ func (c *Client) sendStreamRequest(ctx context.Context, req *http.Request) (*htt
 	if c.config.authToken != "" {
 		req.Header.Set("Authorization", c.config.authToken)
 	}
-	
+
 	return c.requestBuilder.SendNoClose(ctx, req)
 }
 

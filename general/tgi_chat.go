@@ -3,6 +3,8 @@ package general
 import (
 	"context"
 	"net/http"
+
+	"github.com/spf13/cast"
 )
 
 // for Text Generation Inference（tgi） frame
@@ -18,6 +20,13 @@ func (c *Client) CreateChat(
 		return
 	}
 
-	err = c.sendRequest(ctx, req, &response)
+	header, err := c.sendRequest(ctx, req, &response)
+	if err != nil {
+		return
+	}
+
+	promptTokens := header.Get("x-prompt-tokens")
+
+	response.Details.InputLength = cast.ToInt32(promptTokens)
 	return
 }

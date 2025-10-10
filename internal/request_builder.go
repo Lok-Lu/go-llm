@@ -13,7 +13,7 @@ import (
 
 type RequestBuilder interface {
 	Build(ctx context.Context, method, url string, request any) (*http.Request, error)
-	Send(ctx context.Context, req *http.Request, v any) error
+	Send(ctx context.Context, req *http.Request, v any) (*http.Header, error)
 	SendNoCloseWithCustomClient(ctx context.Context, client *http.Client, req *http.Request) (*http.Response, error)
 	SendNoClose(ctx context.Context, req *http.Request) (*http.Response, error)
 }
@@ -72,17 +72,18 @@ func (b *httpRequestBuilder) SendNoClose(ctx context.Context, req *http.Request)
 	return res, nil
 }
 
-func (b *httpRequestBuilder) Send(ctx context.Context, req *http.Request, v any) error {
+func (b *httpRequestBuilder) Send(ctx context.Context, req *http.Request, v any) (header *http.Header, err error) {
 	res, err := b.client.Do(req)
 	if err != nil {
-		return handleErrorWithOutResp(err)
+		return nil, handleErrorWithOutResp(err)
 	}
 	defer res.Body.Close()
 
 	if isFailureStatusCode(res) {
-		return handleErrorResp(res)
+		return nil, handleErrorResp(res)
 	}
-	return decodeResponse(res.Body, v)
+
+	return &res.Header, decodeResponse(res.Body, v)
 }
 
 func handleErrorResp(resp *http.Response) error {
@@ -105,7 +106,6 @@ func handleErrorWithOutResp(err error) error {
 	}
 	return fmt.Errorf("error, status code: %d, message: %w", http.StatusServiceUnavailable, errRes.Error)
 }
-
 
 func isFailureStatusCode(resp *http.Response) bool {
 	return resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusBadRequest

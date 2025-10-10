@@ -18,6 +18,6 @@ func (c *Client) CreateCompletion(
 		return
 	}
 
-	err = c.sendRequest(ctx, req, &response)
+	_, err = c.sendRequest(ctx, req, &response)
 	return
 }

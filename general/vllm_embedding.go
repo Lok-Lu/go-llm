@@ -28,8 +28,8 @@ type VllmEmbeddingTypes struct {
 }
 
 type VllmEmbeddingMeta struct {
-	APIVersion  VllmAPIVersion   `json:"api_version"`
-	BilledUnits VllmBilledUnits  `json:"billed_units"`
+	APIVersion  VllmAPIVersion  `json:"api_version"`
+	BilledUnits VllmBilledUnits `json:"billed_units"`
 }
 
 type VllmAPIVersion struct {
@@ -38,6 +38,7 @@ type VllmAPIVersion struct {
 
 type VllmBilledUnits struct {
 	InputTokens int `json:"input_tokens"`
+	ImageTokens int `json:"image_tokens"`
 }
 
 func (r *VllmEmbeddingResponse) ToEmbeddingResponse(model string) *EmbeddingResponse {
@@ -56,8 +57,8 @@ func (r *VllmEmbeddingResponse) ToEmbeddingResponse(model string) *EmbeddingResp
 		Data:   data,
 		Model:  model,
 		Usage: Usage{
-			PromptTokens: r.Meta.BilledUnits.InputTokens,
-			TotalTokens:  r.Meta.BilledUnits.InputTokens,
+			PromptTokens: r.Meta.BilledUnits.InputTokens + r.Meta.BilledUnits.ImageTokens,
+			TotalTokens:  r.Meta.BilledUnits.InputTokens + r.Meta.BilledUnits.ImageTokens,
 		},
 	}
 }

@@ -6,14 +6,31 @@ import (
 )
 
 type VllmEmbeddingRequest struct {
-	Model           string   `json:"model"`
-	InputType       string   `json:"input_type,omitempty"`
-	Texts           []string `json:"texts,omitempty"`
-	Images          []string `json:"images,omitempty"`
-	Inputs          any      `json:"inputs,omitempty"`
-	EmbeddingTypes  []string `json:"embedding_types,omitempty"`
-	OutputDimension int      `json:"output_dimension,omitempty"`
-	Truncate        string   `json:"truncate,omitempty"`
+	Model           string               `json:"model"`
+	InputType       string               `json:"input_type,omitempty"`
+	Texts           []string             `json:"texts,omitempty"`
+	Images          []string             `json:"images,omitempty"`
+	Inputs          []VllmEmbeddingInput `json:"inputs,omitempty"`
+	EmbeddingTypes  []string             `json:"embedding_types,omitempty"`
+	OutputDimension int                  `json:"output_dimension,omitempty"`
+	Truncate        string               `json:"truncate,omitempty"`
+}
+
+// VllmEmbeddingInput is a single multi-modal input, made up of one or more content parts.
+type VllmEmbeddingInput struct {
+	Content []VllmEmbeddingContent `json:"content"`
+}
+
+// VllmEmbeddingContent is a single content part. Type is "text" or "image_url";
+// exactly one of Text or ImageURL should be set to match Type.
+type VllmEmbeddingContent struct {
+	Type     string        `json:"type"`
+	Text     string        `json:"text,omitempty"`
+	ImageURL *VllmImageURL `json:"image_url,omitempty"`
+}
+
+type VllmImageURL struct {
+	URL string `json:"url"`
 }
 
 type VllmEmbeddingResponse struct {
